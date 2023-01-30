@@ -1,0 +1,8 @@
+还在开发中，目前仅能查看部分效果。
+1.
+D:\django\my_blog
+conda activate django
+2.
+python manage.py runserver
+3.
+http://127.0.0.1:8000/article/article-list/

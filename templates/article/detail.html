@@ -1,0 +1,93 @@
+<!--extends表明此页面继承自base.html文件-->
+{% extends "base.html" %} 
+{% load static %}
+
+
+<!--写入base.html中定义的title-->
+{% block title %} 
+    文章详情
+{% endblock title %} 
+
+<!--写入base.html中定义的context-->
+{% block content %}
+
+<!--文章详情-->
+<div class="container">
+    <div class="row">
+        <!--title and author-->
+        <h1 class="col-12 mt-4 mb-4">{{ article.title }}</h1>
+        <div class="col-12 alert alert-success">by: {{ article.author}}
+            <a href="{% url 'article:article_update' article.id %}">编辑</a>
+        </div>        
+        <!--文章正文-->
+        <div class="col-12">
+            <p>{{ article.body|safe }}</p>
+        </div>
+    </div>
+
+    <!-- Button trigger modal -->     
+    <div class="text-center py-2">
+        <HR align=center width=100% color=#C0C0C0 SIZE=3>
+        <button type="button" class="btn btn-success btn-sm " data-toggle="modal" data-target="#editbutton">
+            编辑
+        </button> 
+        <button type="button" class="btn btn-danger btn-sm text-white" data-toggle="modal" data-target="#deletebutton">
+            删除
+        </button>    
+    </div>
+    <!-- Modal 编辑-->
+    <div class="modal fade" id="editbutton" tabindex="-1" role="dialog" aria-labelledby="editbuttonTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editbutton">编辑确认</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>您想要重新编辑该文章吗？</p>
+                </div>
+                <div class="modal-footer">                    
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <a class="btn btn-success text-white" href="{% url 'article:article_update' article.id %}" role="button">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
+    <!-- Modal 删除-->
+    <div class="modal fade" id="deletebutton" tabindex="-1" role="dialog" aria-labelledby="deletebuttonTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletebutton">删除确认</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>删除后将不可恢复，你确定要删除吗？</p>
+                </div>
+                <div class="modal-footer">
+                    <!--新增一个表单，让删除操作做一个POST 请求--> 
+                    <form
+                        id="safe_delete"
+                        action="{% url 'article:article_safe_delete' article.id %}"
+                        method="POST"
+                        >
+                        {% csrf_token %} 
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-danger text-white">确定</button>
+                    </form>  
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
+ 
